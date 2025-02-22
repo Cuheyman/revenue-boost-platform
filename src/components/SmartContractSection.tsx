@@ -3,12 +3,15 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
-import { connectWallet } from "@/utils/web3Utils";
+import { Input } from "@/components/ui/input";
+import { Loader2, AlertTriangle } from "lucide-react";
+import { connectWallet, getTokenBalance } from "@/utils/web3Utils";
 
 const SmartContractSection = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [stopLoss, setStopLoss] = useState("");
+  const [maxPosition, setMaxPosition] = useState("");
   const { toast } = useToast();
 
   const handleConnect = async () => {
@@ -31,10 +34,26 @@ const SmartContractSection = () => {
     }
   };
 
+  const handleDeploy = () => {
+    if (!stopLoss || !maxPosition) {
+      toast({
+        title: "Validation Error",
+        description: "Please set both stop-loss and maximum position size",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Risk Management Setup",
+      description: "Stop-loss and position limits configured successfully",
+    });
+  };
+
   return (
     <Card className="glass-card p-6">
       <h3 className="text-xl font-semibold text-slate-900 mb-4">
-        Smart Contract Management
+        Trading Risk Management
       </h3>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -56,33 +75,58 @@ const SmartContractSection = () => {
           </Button>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-4 mt-4">
-          <Card className="p-4 hover-scale">
-            <h4 className="font-medium mb-2">Deploy New Contract</h4>
-            <p className="text-sm text-slate-600 mb-3">
-              Create and deploy a new smart contract to the network
-            </p>
-            <Button
-              variant="outline"
-              disabled={!walletAddress}
-              className="w-full"
-            >
-              Deploy Contract
-            </Button>
+        <div className="grid gap-4">
+          <Card className="p-4">
+            <div className="flex items-start space-x-2 mb-4">
+              <AlertTriangle className="h-5 w-5 text-yellow-500" />
+              <p className="text-sm text-slate-600">
+                Set up risk management parameters to protect your trading position
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-slate-700">Stop Loss (%)</label>
+                <Input
+                  type="number"
+                  placeholder="e.g., 2.5"
+                  value={stopLoss}
+                  onChange={(e) => setStopLoss(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-slate-700">Maximum Position Size (%)</label>
+                <Input
+                  type="number"
+                  placeholder="e.g., 10"
+                  value={maxPosition}
+                  onChange={(e) => setMaxPosition(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <Button
+                onClick={handleDeploy}
+                disabled={!walletAddress || !stopLoss || !maxPosition}
+                className="w-full"
+              >
+                Set Risk Parameters
+              </Button>
+            </div>
           </Card>
-          
-          <Card className="p-4 hover-scale">
-            <h4 className="font-medium mb-2">Interact with Contract</h4>
-            <p className="text-sm text-slate-600 mb-3">
-              Connect and interact with existing smart contracts
-            </p>
-            <Button
-              variant="outline"
-              disabled={!walletAddress}
-              className="w-full"
-            >
-              Interact
-            </Button>
+
+          <Card className="p-4">
+            <h4 className="font-medium mb-2">Current Protection</h4>
+            <div className="space-y-2">
+              <p className="text-sm text-slate-600">
+                Stop Loss: {stopLoss ? `${stopLoss}%` : 'Not set'}
+              </p>
+              <p className="text-sm text-slate-600">
+                Max Position: {maxPosition ? `${maxPosition}%` : 'Not set'}
+              </p>
+            </div>
           </Card>
         </div>
       </div>

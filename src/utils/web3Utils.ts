@@ -30,3 +30,22 @@ export const deployContract = async (signer: ethers.Signer, abi: any, bytecode: 
     throw error;
   }
 };
+
+export const getTokenBalance = async (
+  tokenAddress: string,
+  walletAddress: string,
+  provider: ethers.providers.Provider
+) => {
+  try {
+    const tokenContract = new ethers.Contract(
+      tokenAddress,
+      ["function balanceOf(address) view returns (uint256)"],
+      provider
+    );
+    const balance = await tokenContract.balanceOf(walletAddress);
+    return balance;
+  } catch (error) {
+    console.error("Error getting token balance:", error);
+    throw error;
+  }
+};
