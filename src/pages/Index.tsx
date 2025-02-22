@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ArrowUpRight, Wallet2, BarChart3, ArrowRight } from "lucide-react";
+import SmartContractSection from "@/components/SmartContractSection";
 
 const dummyData = [
   { day: "Mon", revenue: 4000 },
@@ -105,6 +105,9 @@ const Index = () => {
             <p className="text-sm text-purple-600 mt-2">All contracts active</p>
           </Card>
         </section>
+
+        {/* Smart Contract Section */}
+        <SmartContractSection />
 
         {/* Chart Section */}
         <Card className="glass-card p-6">
