@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { ArrowUpRight, Wallet2, BarChart3, ArrowRight } from "lucide-react";
 import SmartContractSection from "@/components/SmartContractSection";
+import { Navbar } from "@/components/Navbar";
 
 const dummyData = [
   { day: "Mon", revenue: 4000 },
@@ -33,6 +34,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-8 md:px-8">
+      <Navbar />
       <div className="max-w-7xl mx-auto space-y-8 slide-up">
         {/* Hero Section */}
         <section className="text-center space-y-6 py-12">
