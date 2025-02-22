@@ -1,4 +1,3 @@
-
 import { ethers } from "ethers";
 
 export const connectWallet = async () => {
@@ -17,6 +16,23 @@ export const connectWallet = async () => {
     console.error("Error connecting wallet:", error);
     throw error;
   }
+};
+
+export const simulateTradeWithAI = async (
+  amount: number,
+  stopLoss: number,
+  maxPosition: number
+) => {
+  // Simulated AI analysis - this would be replaced with actual AI model in production
+  const mockAnalysis = {
+    recommendation: "BUY",
+    confidence: 0.85,
+    predictedReturn: 2.5,
+    riskLevel: "MEDIUM",
+    reasoning: "Strong momentum indicators and positive market sentiment",
+  };
+
+  return mockAnalysis;
 };
 
 export const deployContract = async (signer: ethers.Signer, abi: any, bytecode: string, args: any[] = []) => {
